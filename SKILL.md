@@ -1,6 +1,6 @@
 ---
 name: learn
-description: Default mode deep-dives a technical concept and persists `<topic>.md` (scenario → why → how → trade-offs → recall). `--feynman` switches to post-learning validation (explain-back + gap diagnosis). Optional `--lang`/`-l` chooses output language (default English). Examples "/learn Raft consensus", "/learn AWS IAM --lang ko", "/learn TCP handshake --feynman", "/learn IAM role --feynman -l ja".
+description: Default mode deep-dives a technical concept, persists `<topic>.md` (scenario → why → how → trade-offs → recall), then stays open for follow-up Q&A answered from the gathered sources — no re-attach needed. `--feynman` switches to post-learning validation (explain-back + gap diagnosis). Optional `--lang`/`-l` chooses output language (default English). Examples "/learn Raft consensus", "/learn AWS IAM --lang ko", "/learn TCP handshake --feynman", "/learn IAM role --feynman -l ja".
 tags: [study, learning, deep-dive, validation, recall]
 requires: [WebSearch, WebFetch, Write, Read]
 author: rainwnssystem

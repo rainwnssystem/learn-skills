@@ -241,6 +241,35 @@ The rendered note must end up in a file the user can return to. Terminal output 
 
 ---
 
+## Step 5: Follow-up Q&A (same session) — Mandatory
+
+After `Write` succeeds and you echo the saved path, **immediately invite follow-up questions in the same response**. The user does not need to attach the file, re-state the topic, or invoke another command — the collected sources (WebSearch / WebFetch results) and the rendered note body are still in your context, so the Q&A is ready the moment the file lands on disk.
+
+### Invitation line
+
+Append exactly one line after the "Saved to ..." confirmation, in the language selected by `<lang>`. Examples:
+
+> Ask anything about the note and I'll answer from the sources already gathered.
+> 정리한 자료 안에서 바로 답해 드리니, 노트를 읽으며 궁금한 점을 이어서 물어보세요. *(Korean)*
+
+### Answering rules
+
+| Rule | Detail |
+|------|--------|
+| **Primary corpus** | The note body just written + every WebSearch / WebFetch result captured during Steps 1–2. Treat these as the source of truth for follow-up questions. Do not silently re-search what you already read. |
+| **Cite the note** | When the answer lives in the saved file, point to the section number (e.g., "see §5 Mechanics" or "§7-1 decision table"). The user is reading the note alongside, so section anchors are the cheapest navigation. |
+| **Cite the source** | When the answer comes from an S/A-tier source you fetched but did not write into the note (deep detail, edge case), name the source inline. |
+| **When to re-search** | Only if the question genuinely falls outside the gathered material (new sub-topic, comparison the user did not ask for during `/learn`, version the user just mentioned). Announce it first ("Not in the gathered sources — searching."), then `WebSearch` / `WebFetch`. |
+| **When to admit a gap** | If the gathered material does not cover the question and a quick search would not resolve it (subjective, opinion-only, requires private data), say so explicitly. No invented answers. |
+| **Update the note** | If a follow-up surfaces a clear correction or a missing key fact, offer to patch the saved `<topic>.md` via `Edit`. Never patch silently. |
+| **Language** | Answers stay in `<lang>`. Code identifiers, API names, RFC numbers verbatim — same rules as the note body. |
+
+### Exit
+
+The Q&A is open-ended. Keep answering until the user moves to a different topic or invokes another command — do not announce an "end of session" or ask the user to re-trigger Q&A mode.
+
+---
+
 ## Quality checklist (run before output — fix and re-output on any miss)
 
 - [ ] **Is there a "what real-world problem" section right after Overview, with concrete scenarios (domain · actors · numbers)?**
@@ -259,6 +288,7 @@ The rendered note must end up in a file the user can return to. Terminal output 
 - [ ] Is the "Common misconceptions" section non-empty?
 - [ ] Of the 3 recall questions: 1 is a scenario variation, 1 is a decision-criteria scenario-based question?
 - [ ] **Was the full rendered note written to `<topic>.md` in the current working directory via `Write`, and was the path echoed back to the user?**
+- [ ] **After the saved path, did you append a single-line follow-up Q&A invitation in `<lang>`, with no requirement that the user re-attach or re-mention the file?**
 - [ ] **Is the entire body in the language requested by `<lang>` (default English), with code identifiers / API names / reference titles kept verbatim?**
 
 ---
@@ -275,3 +305,5 @@ The rendered note must end up in a file the user can return to. Terminal output 
 - **Showing usage · commands · code first** — code comes after concept explanation.
 - **Snippet-only reading of Wikipedia or the official conceptual page.** Adjacent concepts that only appear mid-article will be silently lost. Full-text WebFetch is required.
 - **Terminal-only output.** Every `/learn` run must persist the rendered note to `<topic>.md` in the current working directory. Skipping `Write` leaves the user with a scroll buffer instead of a reusable note.
+- **Treating the session as finished after `Write`.** Every `/learn` run ends with an open follow-up Q&A invitation; the user must not have to attach the file, re-state the topic, or re-trigger anything.
+- **Silently re-searching during follow-up Q&A** when the answer is already in the corpus you just gathered. Use the in-context sources first; reach for `WebSearch` / `WebFetch` only when the question truly falls outside them, and announce that re-search before doing it.
