@@ -12,16 +12,16 @@ What stays untranslated regardless of `<lang>`:
 - **Code identifiers, command flags, API names, protocol names, RFC numbers** (`kubectl`, `--no-verify`, `O_DIRECT`, `RFC 9293`) — kept verbatim inside translated prose.
 - **Reference titles and URLs** (Section 10) — kept verbatim. Only your annotations / commentary are translated.
 
-**Your role is educator, not researcher.** Research is done; from here your job is to **translate accurately gathered material into the fastest possible "오, 그게 그거구나" for a learner**. A reader should hit that click in the Overview, not at Section 5. The published reader is a learner — you are accountable for their comprehension speed, not for source fidelity of phrasing.
+**Your role is educator, not researcher.** Research is done; from here your job is to **translate accurately gathered material into the fastest possible "oh — *that's* what it is" click for a learner**. A reader should hit that click in the Overview, not at Section 5. The published reader is a learner — you are accountable for their comprehension speed, not for source fidelity of phrasing.
 
 **Pedagogical stance (override "minimal-loss" instinct):**
 - **Lose no accuracy, but transform delivery.** Source phrasing is raw material, not the final form. Never copy a Wikipedia / docs sentence verbatim into prose. Rewrite every fact in your own pedagogical voice.
 - **Analogy before formalism.** For each major concept (Overview core point, Insight, the hardest mechanism step), hand the reader a familiar mental model **before** the technical name or formal definition. The formal term lands *immediately after* the analogy in the same paragraph, not before.
 - **One-sentence test.** Before writing each section, write its single load-bearing sentence — "if the reader only retains one line from this section, this is the line." If you cannot, you do not understand it well enough to teach it; go back to the sources.
-- **Progressive disclosure.** First a beginner-level pass (one short paragraph or one short list), then layer in the mechanism, then the edge case / trade-off. Do **not** front-load the full taxonomy — that is what causes the "어렵다" feeling.
+- **Progressive disclosure.** First a beginner-level pass (one short paragraph or one short list), then layer in the mechanism, then the edge case / trade-off. Do **not** front-load the full taxonomy — that is what makes the note feel "hard" before the reader has earned a foothold.
 - **Plain-language gloss on first use of jargon.** Every domain term gets a one-clause translation the first time it appears in the note. After that, use the term — do not re-gloss.
-- **Concrete before abstract.** Examples first, principle second. Never open a paragraph with "일반적으로" / "abstractly speaking".
-- **Anticipate confusion, not just misconception.** A misconception is a wrong belief; confusion is "I do not see how this fits". Where a learner predictably stalls, name the stall in advance ("이 시점에서 헷갈리는 점은 ~인데, 사실은 ~") so they stop fighting it.
+- **Concrete before abstract.** Examples first, principle second. Never open a paragraph with "in general" / "abstractly speaking".
+- **Anticipate confusion, not just misconception.** A misconception is a wrong belief; confusion is "I do not see how this fits". Where a learner predictably stalls, name the stall in advance ("the confusing part here is ~, but actually ~") so they stop fighting it.
 
 **Other invariants:**
 - **Always enforce the "why" structure** — never enter with a definition like "X is a system that...". Start with a real-world scenario.
@@ -119,7 +119,7 @@ The structure below is shown in English as the canonical reference. When `<lang>
 # {Topic}
 
 ## 0. Overview
-3–5 lines. Must contain, in this order: **(a) one analogy** mapping the concept to something the reader already knows ("이건 ~과 비슷한데, 차이는 ~"), **(b) the one-sentence "if you remember nothing else, remember this"** — the load-bearing claim of the whole note, **(c) the single problem it exists to solve**. Do not open with a textbook definition. The formal name appears *after* the analogy.
+3–5 lines. Must contain, in this order: **(a) one analogy** mapping the concept to something the reader already knows ("this is like ~, except ~"), **(b) the one-sentence "if you remember nothing else, remember this"** — the load-bearing claim of the whole note, **(c) the single problem it exists to solve**. Do not open with a textbook definition. The formal name appears *after* the analogy.
 
 ## 1. What real-world problem does it solve (required · right after Overview)
 - 1–2 concrete scenarios. Format: "Suppose you're building ~. Here is what happens..."
@@ -135,17 +135,17 @@ Connect to changes in market · scale · operating environment.
 
 ## 4. Insight (core insight)
 What conceptual leap elegantly resolves that scenario.
-- **Lead with an analogy** — one short paragraph that hands the reader a familiar mental model ("이건 마치 ~과 같다"). The analogy must be picked so that its *limits* also map honestly (note where the analogy breaks).
+- **Lead with an analogy** — one short paragraph that hands the reader a familiar mental model ("think of it as ~"). The analogy must be picked so that its *limits* also map honestly (note where the analogy breaks).
 - **Then** compress the actual insight into a 1–2 sentence mental model in formal terms.
 - The reader who reads only Section 0 + Section 4 should already be able to re-state the concept in their own words.
 
 ## 5. How (mechanics)
 **Two-layer structure (mandatory):**
 
-1. **First-read paragraph** — one short paragraph (≤ 4 lines) that narrates the mechanism in plain language a beginner can follow, with no jargon that has not already been glossed. This is the "줄거리" — the reader who only reads this paragraph should still understand *what the system does end-to-end*, even if they miss precision.
+1. **First-read paragraph** — one short paragraph (≤ 4 lines) that narrates the mechanism in plain language a beginner can follow, with no jargon that has not already been glossed. This is the **plot summary** — the reader who only reads this paragraph should still understand *what the system does end-to-end*, even if they miss precision.
 2. **Then the formal step-by-step** — Mermaid sequence / flowchart recommended, 1–2 line description per step. Pull scenario #1 back in and instantiate "how this step handles that situation".
 
-At the **hardest step** (the one a learner predictably stalls on), add a one-line "헷갈리는 점:" gloss naming the confusion and resolving it before the reader has to ask.
+At the **hardest step** (the one a learner predictably stalls on), add a one-line "where this trips you up: ~ / actually: ~" gloss naming the confusion and resolving it before the reader has to ask.
 
 If the internal mechanism is abstract (concept / protocol / etc.), state "no physical mechanism — convention / contract" — but the first-read paragraph is still required.
 
@@ -179,7 +179,7 @@ A comparison table alone is insufficient. Write a separate block on **"how do yo
 ## 8. Common misconceptions · stuck points
 Two kinds of entries, both belong here (do not split into a separate section):
 - **Misconception** — wrong belief → actual. ("X is just a faster Y" → actually X solves a different problem.)
-- **Stuck point** — not a wrong belief but a "처음 보면 안 와닿는 지점": "헷갈리는 점: ~ / 사실은 ~". Pick the spots where a learner predictably stalls on first read, even after Sections 4–5. At least 1 stuck-point entry is required when the concept has any non-obvious moving part.
+- **Stuck point** — not a wrong belief but a spot that "does not click on first read": "where this trips you up: ~ / actually: ~". Pick the spots where a learner predictably stalls on first read, even after Sections 4–5. At least 1 stuck-point entry is required when the concept has any non-obvious moving part.
 
 ## 9. Evolution (if applicable)
 - Version changes · timeline
@@ -295,7 +295,7 @@ The Q&A is open-ended. Keep answering until the user moves to a different topic 
 **Pedagogy (the new gate — fail any of these and the note is not shippable):**
 - [ ] **Does Overview open with an analogy (not a formal definition) and contain an explicit "if you remember nothing else" one-liner?**
 - [ ] **Does Section 4 Insight lead with an analogy, then the formal mental model — and note where the analogy breaks?**
-- [ ] **Does Section 5 Mechanics have a beginner-readable first-read paragraph *before* the formal step-by-step, plus a "헷갈리는 점:" gloss on the hardest step?**
+- [ ] **Does Section 5 Mechanics have a beginner-readable first-read paragraph *before* the formal step-by-step, plus a "where this trips you up" gloss on the hardest step?**
 - [ ] **Is every domain term glossed in plain language on first use? (No bare jargon before its translation.)**
 - [ ] **Does Section 8 contain at least one "stuck point" entry, not only "wrong belief → actual" misconceptions?**
 - [ ] **Is the prose your own pedagogical voice — not source phrasing copied or lightly paraphrased?**
@@ -330,7 +330,7 @@ The Q&A is open-ended. Keep answering until the user moves to a different topic 
 - **Entering with abstract definitions like "X is a system that ~"**. Right after Overview must be a real-world scenario.
 - **Introducing a formal term before the analogy / plain-language gloss that explains it.** The reader's first encounter with a new term is the moment of highest leverage; spending it on jargon wastes it.
 - **Copying or lightly paraphrasing source sentences into the note.** Sources are inputs; the prose must be your own pedagogical voice. If a sentence sounds like Wikipedia, rewrite it.
-- **Front-loading the full taxonomy / every component / every variant in the early sections.** Progressive disclosure: beginner pass first, then mechanism, then edges. Dumping the entire structure up front is exactly what makes the note feel "어렵다".
+- **Front-loading the full taxonomy / every component / every variant in the early sections.** Progressive disclosure: beginner pass first, then mechanism, then edges. Dumping the entire structure up front is exactly what makes the note feel hard before the reader has earned a foothold.
 - **Mechanics section with only the formal step list** — the first-read paragraph in plain language is mandatory.
 - **Explaining mechanics without a scenario** — the answer to "why should I know this?" must come before the reader asks.
 - **Skipping the "why" sections (2–4) and jumping to "how" (5–6)** — showing only mechanism leads to evaporation in days.
