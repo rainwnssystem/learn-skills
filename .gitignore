@@ -1,0 +1,25 @@
+# Local agent harness overrides (per-machine)
+.claude/settings.local.json
+CLAUDE.md
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Python / Node caches (in case tooling is added later)
+__pycache__/
+*.py[cod]
+node_modules/
