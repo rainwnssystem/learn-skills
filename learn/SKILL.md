@@ -1,14 +1,14 @@
 ---
 name: learn
-description: Deep-dive into a technical concept — real-world scenario → prior approach → limits → core insight → mechanics → components → trade-offs + decision criteria → recall → adjacent map. Web research mandatory; Wikipedia and official conceptual pages are read end-to-end for breadth. Examples "/learn Raft consensus", "/learn AWS IAM", "/learn Linux cgroup".
+description: Deep-dive into a technical concept — real-world scenario → prior approach → limits → core insight → mechanics → components → trade-offs + decision criteria → recall → adjacent map. Web research mandatory; Wikipedia and official conceptual pages are read end-to-end for breadth. The final note is always written to `<topic>.md` in the current working directory, not just printed. Examples "/learn Raft consensus", "/learn AWS IAM", "/learn Linux cgroup".
 tags: [study, learning, deep-dive]
-requires: [WebSearch, WebFetch]
+requires: [WebSearch, WebFetch, Write]
 author: rainwnssystem
 created: 2026-06-19
 updated: 2026-06-19
 ---
 
-When the user invokes `/learn <topic>`, proceed in three stages: **Collect → Synthesize → Document**.
+When the user invokes `/learn <topic>`, proceed in four stages: **Collect → Synthesize → Document → Persist**.
 
 **Core philosophy:**
 - **Always enforce the "why" structure** — never enter with a definition like "X is a system that...". Start with a real-world scenario.
@@ -208,6 +208,34 @@ Instead of continuous prose, combine **varied elements**:
 
 ---
 
+## Step 4: Persist (Persist) — Mandatory
+
+The rendered note must end up in a file the user can return to. Terminal output alone is treated as **incomplete**.
+
+### Where to write
+
+| Decision | Rule |
+|----------|------|
+| Directory | The **current working directory** the user ran `/learn` in. Do not create subdirectories, do not write elsewhere. |
+| Filename | `<topic>.md`, where `<topic>` is the user's input converted to **snake_case**: lowercase, ASCII, whitespace and `-` collapsed to `_`, punctuation dropped. `AWS IAM` → `aws_iam.md`, `Raft consensus` → `raft_consensus.md`, `TCP/IP` → `tcp_ip.md`. |
+| Collision | If `<topic>.md` already exists, append `_2`, `_3` (e.g., `tls_2.md`) rather than overwriting. Never silently overwrite an existing learn note. |
+
+### What to write
+
+- **Exactly** the rendered Section 0–12 document. No truncation, no "see terminal for full version".
+- File body starts with the `# {Topic}` heading; no extra preamble.
+- Use the `Write` tool. Confirm the final path back to the user as the closing line of the terminal response:
+
+  > Saved to `tls.md`.
+
+### Failure modes to avoid
+
+- Writing only a summary to the file and keeping the full body in the terminal — defeats the purpose.
+- Writing to a path outside the current working directory, or under a `notes/`-style subfolder, without being asked.
+- Skipping persistence when the topic is "small" — every `/learn` invocation produces a file.
+
+---
+
 ## Quality checklist (run before output — fix and re-output on any miss)
 
 - [ ] **Is there a "what real-world problem" section right after Overview, with concrete scenarios (domain · actors · numbers)?**
@@ -225,6 +253,7 @@ Instead of continuous prose, combine **varied elements**:
 - [ ] Any paragraph exceeds 3 lines?
 - [ ] Is the "Common misconceptions" section non-empty?
 - [ ] Of the 3 recall questions: 1 is a scenario variation, 1 is a decision-criteria scenario-based question?
+- [ ] **Was the full rendered note written to `<topic>.md` in the current working directory via `Write`, and was the path echoed back to the user?**
 
 ---
 
@@ -239,3 +268,4 @@ Instead of continuous prose, combine **varied elements**:
 - **Skipping the "why" sections (2–4) and jumping to "how" (5–6)** — showing only mechanism leads to evaporation in days.
 - **Showing usage · commands · code first** — code comes after concept explanation.
 - **Snippet-only reading of Wikipedia or the official conceptual page.** Adjacent concepts that only appear mid-article will be silently lost. Full-text WebFetch is required.
+- **Terminal-only output.** Every `/learn` run must persist the rendered note to `<topic>.md` in the current working directory. Skipping `Write` leaves the user with a scroll buffer instead of a reusable note.
