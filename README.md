@@ -1,58 +1,61 @@
 # Learn Skills
 
-A curated set of Markdown-based agent skills focused on **deep diving and retention** of computer-science fundamentals, cloud computing, and backend engineering.
+A single Markdown-based agent skill focused on **deep diving and retention** of computer-science fundamentals, cloud computing, and backend engineering.
 
-Each skill is a `SKILL.md` file (YAML frontmatter + body) following the schema in [`docs/SKILL_SCHEMA.md`](./docs/SKILL_SCHEMA.md). Any agent harness that loads skills from a directory of `SKILL.md` files will pick these up.
+The skill exposes two modes from one entry point:
 
-## Available skills
+| Mode | Trigger | What it does |
+|------|---------|--------------|
+| Learn (default) | `/learn <topic>` | Deep-dive into a technical concept with a strict "scenario → why → how → trade-offs → recall" structure. Web research is mandatory. Persists `<topic>.md` to the current working directory. |
+| Feynman | `/learn <concept> --feynman` | Post-learning validation. Forces you to explain in your own words, then diagnoses gaps. |
 
-| Skill | What it does |
-|-------|--------------|
-| [`learn`](./learn/SKILL.md) | Deep-dive into a technical concept with a strict "scenario → why → how → trade-offs → recall" structure. Web research is mandatory. |
-| [`feynman`](./feynman/SKILL.md) | Post-learning validation. Forces you to explain in your own words, then diagnoses gaps. |
+Both modes accept `--lang`/`-l` for output language (default English).
+
+The repository follows the schema in [`docs/SKILL_SCHEMA.md`](./docs/SKILL_SCHEMA.md). At install time the repo becomes a single skill directory; the dispatcher `SKILL.md` loads exactly one of `references/learn.md` or `references/feynman.md` per invocation, so token usage stays minimal regardless of mode.
 
 ## Install
 
-Clone the repository directly into your agent's skills directory. Each skill (`learn/`, `feynman/`) sits at the repo root, so the cloned tree is immediately discovered. Pick the section that matches your agent.
+Clone the repository **directly as the skill directory** in your agent's skills root. The second argument to `git clone` renames the destination so `SKILL.md` lands exactly one level under the skills root.
 
 ### Claude Code
 
 ```bash
-git clone https://github.com/rainwnssystem/learn-skills.git ~/.claude/skills/learn-skills
+git clone https://github.com/rainwnssystem/learn-skills.git ~/.claude/skills/learn
 ```
 
 ### Codex
 
 ```bash
-git clone https://github.com/rainwnssystem/learn-skills.git ~/.codex/skills/learn-skills
+git clone https://github.com/rainwnssystem/learn-skills.git ~/.codex/skills/learn
 ```
 
 ### OpenCode
 
 ```bash
-git clone https://github.com/rainwnssystem/learn-skills.git ~/.config/opencode/skills/learn-skills
+git clone https://github.com/rainwnssystem/learn-skills.git ~/.config/opencode/skills/learn
 ```
 
 ### Custom skills directory
 
 ```bash
-git clone https://github.com/rainwnssystem/learn-skills.git <your-skills-dir>/learn-skills
+git clone https://github.com/rainwnssystem/learn-skills.git <your-skills-dir>/learn
 ```
 
 ### Update
 
 ```bash
-cd <wherever you cloned it>
-git pull
+cd ~/.claude/skills/learn && git pull
 ```
 
 ### Use
 
-Invoke as slash commands:
+Invoke as a slash command:
 
 ```
 /learn Raft consensus
-/feynman TCP handshake
+/learn AWS IAM --lang ko
+/learn TCP handshake --feynman
+/learn IAM role --feynman -l ja
 ```
 
 ## Repository layout
@@ -61,23 +64,22 @@ Invoke as slash commands:
 .
 ├── README.md
 ├── LICENSE
-├── learn/
-│   └── SKILL.md
-├── feynman/
-│   └── SKILL.md
+├── SKILL.md                     # dispatcher: flag parsing → loads one reference
+├── references/
+│   ├── learn.md                 # learn-mode body (Collect → Synthesize → Document → Persist)
+│   └── feynman.md               # feynman-mode body (Explain → Diagnose → Poke → Consolidate)
 └── docs/
-    ├── SKILL_SCHEMA.md           # Required frontmatter and rules
-    └── skill-template/SKILL.md   # Copy this to start a new skill
+    ├── SKILL_SCHEMA.md          # frontmatter and authoring rules
+    └── skill-template/SKILL.md  # copy this to start a new skill
 ```
 
-Each top-level directory that contains a `SKILL.md` is one installable skill. `docs/` is meta-documentation only.
+After cloning into `~/.claude/skills/learn`, the agent discovers `~/.claude/skills/learn/SKILL.md` directly — no extra nesting.
 
-## Contributing a new skill
+## Authoring notes
 
-1. Copy `docs/skill-template/` to `<your-skill>/` at the repo root.
-2. Fill in the frontmatter following [`SKILL_SCHEMA.md`](./docs/SKILL_SCHEMA.md).
-3. Write the body. Use tables, lists, and Mermaid diagrams — avoid walls of prose.
-4. Open a pull request.
+- The dispatcher is intentionally thin. Mode bodies live in `references/` so an invocation only pays for the file it actually needs.
+- Frontmatter and body language: English (the published skill surface is English-first). User-facing prose is translated at run time via `--lang`.
+- Skill history lives in `git log`. No `version` field, no version mentions in commit messages.
 
 ## License
 
