@@ -1,6 +1,6 @@
 ---
 name: learn
-description: Deep-dive into a technical concept — real-world scenario → prior approach → limits → core insight → mechanics → components → trade-offs + decision criteria → recall → adjacent map. Web research mandatory; Wikipedia and official conceptual pages are read end-to-end for breadth. The final note is always written to `<topic>.md` in the current working directory, not just printed. Examples "/learn Raft consensus", "/learn AWS IAM", "/learn Linux cgroup".
+description: Deep-dive into a technical concept — real-world scenario → prior approach → limits → core insight → mechanics → components → trade-offs + decision criteria → recall → adjacent map. Web research mandatory; Wikipedia and official conceptual pages are read end-to-end for breadth. The final note is always written to `<topic>.md` in the current working directory, not just printed. Optional `--lang`/`-l` chooses the output language (default English). Examples "/learn Raft consensus", "/learn AWS IAM --lang ko", "/learn Linux cgroup -l ja".
 tags: [study, learning, deep-dive]
 requires: [WebSearch, WebFetch, Write]
 author: rainwnssystem
@@ -8,7 +8,28 @@ created: 2026-06-19
 updated: 2026-06-19
 ---
 
-When the user invokes `/learn <topic>`, proceed in four stages: **Collect → Synthesize → Document → Persist**.
+When the user invokes `/learn <topic> [--lang <lang>]`, proceed in four stages: **Collect → Synthesize → Document → Persist**.
+
+## Invocation options
+
+| Flag | Alias | Value | Default | Effect |
+|------|-------|-------|---------|--------|
+| `--lang` | `-l` | Language name or ISO code (`ko`, `Korean`, `ja`, `zh`, `English`, ...) | `English` | The entire rendered note — section headings, prose, tables, diagram labels, callouts, recall questions, and the closing terminal confirmation — is written in that language. |
+
+Parse the flag from the invocation tail before treating the remainder as `<topic>`. Support both space and `=` forms:
+
+- `/learn Raft consensus --lang ko` → topic = "Raft consensus", lang = Korean
+- `/learn AWS IAM -l ja` → topic = "AWS IAM", lang = Japanese
+- `/learn TLS --lang=zh` → topic = "TLS", lang = Chinese
+- `/learn Linux cgroup` → topic = "Linux cgroup", lang = English (default)
+
+What stays untranslated regardless of `--lang`:
+
+- **Filename** — always ASCII snake_case based on `<topic>` (see Step 4). `--lang ko` does not change the file name.
+- **Code identifiers, command flags, API names, protocol names, RFC numbers** (`kubectl`, `--no-verify`, `O_DIRECT`, `RFC 9293`) — kept verbatim inside translated prose.
+- **Reference titles and URLs** (Section 10) — kept verbatim. Only your annotations / commentary are translated.
+
+If the language value is ambiguous or unrecognized, fall back to English and note the fallback in one line at the top of the terminal response (not in the file).
 
 **Core philosophy:**
 - **Always enforce the "why" structure** — never enter with a definition like "X is a system that...". Start with a real-world scenario.
@@ -96,6 +117,8 @@ If collection is incomplete, **explicitly mark it** and proceed. No guessing.
 ---
 
 ## Step 3: Documentation (Document)
+
+The structure below is shown in English as the canonical reference. When `--lang` is set, translate every heading, label, and prose block into that language while keeping the same section order, the same callouts, and the same mandatory sub-sections (e.g., Section 7-1 Decision criteria, Section 12 Adjacent map mini-blocks).
 
 ### Output structure (required sections — fixed order)
 
@@ -222,11 +245,12 @@ The rendered note must end up in a file the user can return to. Terminal output 
 
 ### What to write
 
-- **Exactly** the rendered Section 0–12 document. No truncation, no "see terminal for full version".
-- File body starts with the `# {Topic}` heading; no extra preamble.
-- Use the `Write` tool. Confirm the final path back to the user as the closing line of the terminal response:
+- **Exactly** the rendered Section 0–12 document, in the language selected by `--lang` (default English). No truncation, no "see terminal for full version".
+- File body starts with the `# {Topic}` heading; no extra preamble. The `{Topic}` itself stays as the user typed it (do not translate proper-noun topics like "Raft consensus" or "AWS IAM").
+- Use the `Write` tool. Confirm the final path back to the user as the closing line of the terminal response, in the same language as the note body:
 
-  > Saved to `tls.md`.
+  > Saved to `tls.md`.  *(English)*
+  > `tls.md`에 저장했습니다.  *(Korean, `--lang ko`)*
 
 ### Failure modes to avoid
 
@@ -254,6 +278,7 @@ The rendered note must end up in a file the user can return to. Terminal output 
 - [ ] Is the "Common misconceptions" section non-empty?
 - [ ] Of the 3 recall questions: 1 is a scenario variation, 1 is a decision-criteria scenario-based question?
 - [ ] **Was the full rendered note written to `<topic>.md` in the current working directory via `Write`, and was the path echoed back to the user?**
+- [ ] **Is the entire body in the language requested by `--lang` (default English), with code identifiers / API names / reference titles kept verbatim?**
 
 ---
 
